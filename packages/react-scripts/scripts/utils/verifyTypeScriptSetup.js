@@ -130,7 +130,6 @@ function verifyTypeScriptSetup() {
 
   const messages = [];
   let appTsConfig;
-  let parsedTsConfig;
   let parsedCompilerOptions;
   try {
     const { config: readTsConfig, error } = ts.readConfigFile(
@@ -148,7 +147,7 @@ function verifyTypeScriptSetup() {
     // Calling this function also mutates the tsconfig above,
     // adding in "include" and "exclude", but the compilerOptions remain untouched
     let result;
-    parsedTsConfig = immer(readTsConfig, config => {
+    immer(readTsConfig, config => {
       result = ts.parseJsonConfigFileContent(
         config,
         ts.sys,
@@ -206,14 +205,6 @@ function verifyTypeScriptSetup() {
     }
   }
 
-  // tsconfig will have the merged "include" and "exclude" by this point
-  if (parsedTsConfig.include == null) {
-    appTsConfig.include = ['src'];
-    messages.push(
-      `${chalk.cyan('include')} should be ${chalk.cyan.bold('src')}`
-    );
-  }
-
   if (messages.length > 0) {
     if (firstTimeSetup) {
       console.log(
@@ -240,11 +231,11 @@ function verifyTypeScriptSetup() {
     writeJson(paths.appTsConfig, appTsConfig);
   }
 
-  // Reference `react-scripts` types
+  // Reference `fork-ts-react-scripts` types
   if (!fs.existsSync(paths.appTypeDeclarations)) {
     fs.writeFileSync(
       paths.appTypeDeclarations,
-      `/// <reference types="react-scripts" />${os.EOL}`
+      `/// <reference types="fork-ts-react-scripts" />${os.EOL}`
     );
   }
 }
