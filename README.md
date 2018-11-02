@@ -1,6 +1,6 @@
 # fork-ts-react-scripts
 
-A fork of CRA 2.1 that doesn't mess up with `tsconfig.json` absolute paths import feature.
+A fork of CRA 2.1+ that doesn't mess up with `tsconfig.json` absolute paths import feature.
 
 ## How it works
 
@@ -41,6 +41,13 @@ module.exports = override(
     ['e2e']: path.resolve(__dirname, 'e2e'),
   })
 );
+```
+
+Add `fork-ts-react-scripts` and remove `react-scripts`:
+
+```sh
+yarn remove react-scripts
+yarn add fork-ts-react-scripts
 ```
 
 Update your `package.json` tasks to make sure CRA's config gets "rewired":
